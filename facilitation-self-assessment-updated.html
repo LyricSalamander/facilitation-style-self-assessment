@@ -1,197 +1,300 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Facilitation Style Self‑Assessment</title>
-  <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f6f7f8;margin:0;padding:24px}
-    .wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:16px}
-    @media(min-width:900px){.wrap{grid-template-columns:1fr 1fr}}
-    .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px}
-    h1{margin:0 0 6px;font-size:22px}
-    .sub{margin:0 0 12px;color:#555}
-    label{display:block;margin-bottom:12px;font-size:14px}
-    input[type=text]{width:100%;padding:8px 10px;border:1px solid #ccc;border-radius:10px}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Facilitation Style Self-Assessment</title>
+    <style>
+        body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f6f7f8;margin:0;padding:24px}
+        .wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:16px}
+        @media (min-width:900px){.wrap{grid-template-columns:1fr 1fr}}
+        .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px}
+        h1{margin:0 0 6px;font-size:22px}
+        .sub{margin:0 0 12px;color:#555}
+        label{display:block;margin-bottom:12px;font-size:14px}
+        input[type=text]{width:100%;padding:8px 10px;border:1px solid #ccc;border-radius:10px}
     .sliders{display:grid;gap:12px}
-    .item{border:1px solid #eee;padding:12px;border-radius:12px}
-    .row{display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
-    .row h4{margin:0;font-size:14px}
-    .val{font-size:12px;color:#666}
-    .anchors{display:flex;justify-content:space-between;font-size:12px;color:#555;margin-top:6px}
-    .results .head{display:flex;justify-content:space-between;align-items:center}
-    .copy{border:1px solid #ddd;padding:6px 10px;border-radius:10px;background:#fff;cursor:pointer}
-    .name{margin:8px 0 0 0;font-weight:600}
-    .summary{margin:10px 0 0 0;padding-left:20px}
-    .summary li{margin:6px 0;line-height:1.35}
-    .tip{margin-top:8px;color:#777;font-size:12px}
-  </style>
+        .item{border:1px solid #eee;padding:12px;border-radius:12px}
+        .row{display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
+        .row h4{margin:0;font-size:14px}
+        .val{font-size:12px;color:#666}
+        input[type=range]{width:100%}
+    .sr-only{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+        .anchors{display:flex;justify-content:space-between;font-size:12px;color:#555;margin-top:6px}
+        .results .head{display:flex;justify-content:space-between;align-items:center}
+        .copy{border:1px solid #ddd;padding:6px 10px;border-radius:10px;background:#fff;cursor:pointer}
+        .name{margin:8px 0 0 0;font-weight:600}
+        .summary{margin:10px 0 0 0;padding-left:20px}
+        .summary li{margin:6px 0;line-height:1.35}
+        .tip{margin-top:8px;color:#777;font-size:12px}
+    </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h1>Facilitation Style Self‑Assessment</h1>
-      <p class="sub">Move each slider (1–7). There are no right or wrong answers—this reflects your style today.</p>
-      <label>Your name (optional)
-        <input type="text" id="name" placeholder="e.g., Alex Rivera">
-      </label>
-      <div id="sliders" class="sliders"></div>
+    <div class="wrap">
+        <div class="card">
+            <h1>Facilitation Style Self-Assessment</h1>
+            <p class="sub">Move each slider (1–7). There are no right or wrong answers—this reflects your style today.</p>
+            <label>Your name (optional)
+                <input type="text" id="name" placeholder="e.g., Alex Rivera" />
+            </label>
+            <noscript><p style="color:#b00">This activity requires JavaScript to function. Please enable JavaScript to use the interactive assessment.</p></noscript>
+            <div id="sliders" class="sliders"></div>
+        </div>
+
+        <div class="card results" role="region" aria-live="polite">
+                    <div class="head">
+                        <h3>Your Results (Live)</h3>
+                        <div style="display:flex;gap:8px;align-items:center">
+                            <button class="copy" id="copy">Copy summary</button>
+                            <button class="copy" id="copyJson">Copy JSON</button>
+                            <button class="copy" id="downloadCsv">Download CSV</button>
+                            <button class="copy" id="reset">Reset</button>
+                        </div>
+                    </div>
+                    <div class="name" id="nameLine" style="display:none;"></div>
+                    <ul class="summary" id="summaryList"></ul>
+                    <label for="summaryText" class="tip">Selectable summary (fallback for clipboard issues)</label>
+                    <textarea id="summaryText" readonly style="width:100%;min-height:140px;padding:8px;border-radius:8px;border:1px solid #ddd;background:#fafafa;margin-top:8px"></textarea>
+                    <div class="tip">Tip: Screenshot or copy the summary into your A3.</div>
+                    <div id="toast" role="status" aria-live="polite" style="position:fixed;right:18px;bottom:18px;background:#111;color:#fff;padding:8px 12px;border-radius:8px;display:none;opacity:0.95;font-size:13px"></div>
+        </div>
     </div>
 
-    <div class="card results">
-      <div class="head">
-        <h3>Your Results (Live)</h3>
-        <button class="copy" id="copy">Copy summary</button>
-      </div>
-      <div class="name" id="nameLine" style="display:none;"></div>
-      <ul class="summary" id="summaryList"></ul>
-      <div class="tip">Tip: Screenshot or copy the summary into your A3.</div>
-    </div>
-  </div>
+    <script>
+        const dims = [
+            {key:"Conflict",     label:"Handling Conflict",        left:"avoid",         right:"embrace"},
+            {key:"Processing",   label:"Processing Style",         left:"nonverbal",     right:"verbal"},
+            {key:"Agenda",       label:"Agenda Management",        left:"stick to agenda", right:"flexible"},
+            {key:"Emotion",      label:"Expression of Emotion",    left:"hide emotion",  right:"speak with emotion"},
+            {key:"Communication",label:"Communication Style",      left:"linear",        right:"story-based"},
+            {key:"Movement",     label:"Body Movement",            left:"still",         right:"gesture"},
+            {key:"Space",        label:"Physical Space",           left:"more space",    right:"close/touch"},
+            {key:"Teaching",     label:"Teaching Approach",        left:"facts & figures", right:"stories"},
+            {key:"Facilitation", label:"Facilitation Movement",    left:"stand",         right:"move"}
+        ];
 
-<script>
-const dims=[
-  {key:"Conflict",label:"Handling Conflict",left:"avoid",right:"embrace"},
-  {key:"Processing",label:"Processing Style",left:"nonverbal",right:"verbal"},
-  {key:"Agenda",label:"Agenda Management",left:"stick to agenda",right:"flexible"},
-  {key:"Emotion",label:"Expression of Emotion",left:"hide emotion",right:"speak with emotion"},
-  {key:"Communication",label:"Communication Style",left:"linear",right:"story-based"},
-  {key:"Movement",label:"Body Movement",left:"still",right:"gesture"},
-  {key:"Space",label:"Physical Space",left:"more space",right:"close/touch"},
-  {key:"Teaching",label:"Teaching Approach",left:"facts & figures",right:"stories"},
-  {key:"Facilitation",label:"Facilitation Movement",left:"stand",right:"move"}
-];
+        // Nuanced 1–7 phrasing (“I …”) per dimension
+        const phrases = {
+            Conflict: [
+                "I am very conflict-avoidant",
+                "I usually avoid conflict",
+                "I lean toward avoiding conflict",
+                "I have an even mix of avoiding and embracing conflict",
+                "I usually embrace conflict",
+                "I lean into embracing conflict",
+                "I am very comfortable embracing conflict"
+            ],
+            Processing: [
+                "I am a very nonverbal processor",
+                "I am usually a nonverbal processor",
+                "I lean nonverbal in how I process",
+                "I use an even mix of nonverbal and verbal processing",
+                "I am usually a verbal processor",
+                "I lean verbal in how I process",
+                "I am a very verbal processor"
+            ],
+            Agenda: [
+                "I am very strict about sticking to the agenda",
+                "I usually stick to the agenda",
+                "I lean toward sticking to the agenda",
+                "I balance sticking to and flexing the agenda",
+                "I am usually flexible with the agenda",
+                "I lean flexible with the agenda",
+                "I am very flexible with the agenda"
+            ],
+            Emotion: [
+                "I strongly hide or downplay emotion",
+                "I usually keep emotion reserved",
+                "I lean reserved with emotion",
+                "I balance being reserved and speaking with emotion",
+                "I usually speak with emotion",
+                "I lean expressive with emotion",
+                "I am very expressive / emotion-forward"
+            ],
+            Communication: [
+                "I am very linear in how I communicate",
+                "I usually communicate in a linear way",
+                "I lean linear in communication",
+                "I balance linear and story-based communication",
+                "I usually communicate through stories",
+                "I lean story-based in communication",
+                "I am very story-based in how I communicate"
+            ],
+            Movement: [
+                "I stay very still while facilitating",
+                "I usually stay still",
+                "I lean toward staying still",
+                "I balance being still and using gestures",
+                "I usually use gestures and movement",
+                "I lean into using gestures",
+                "I am very expressive with movement"
+            ],
+            Space: [
+                "I strongly prefer more physical space",
+                "I usually prefer more space",
+                "I lean toward preferring more space",
+                "I balance giving space and being close",
+                "I am usually comfortable being close",
+                "I lean comfortable with being close / light touch (as appropriate)",
+                "I am very comfortable being close / using appropriate touch"
+            ],
+            Teaching: [
+                "I am very facts & figures oriented",
+                "I usually rely on facts & figures",
+                "I lean toward facts & figures",
+                "I balance facts & figures and stories",
+                "I usually teach with stories",
+                "I lean toward story-based teaching",
+                "I am very story-based in teaching"
+            ],
+            Facilitation: [
+                "I stand in one spot almost all the time",
+                "I usually stand in one spot",
+                "I lean toward standing in one spot",
+                "I balance standing in place and moving around",
+                "I usually move around the room",
+                "I lean toward moving around",
+                "I am very active and move around a lot"
+            ]
+        };
 
-// Nuanced 1–7 phrasing with \"I ...\" language
-const phrases = {
-  Conflict: [
-    "I am very conflict‑avoidant",
-    "I usually avoid conflict",
-    "I lean toward avoiding conflict",
-    "I have an even mix of avoiding and embracing conflict",
-    "I usually embrace conflict",
-    "I lean into embracing conflict",
-    "I am very comfortable embracing conflict"
-  ],
-  Processing: [
-    "I am a very nonverbal processor",
-    "I am usually a nonverbal processor",
-    "I lean nonverbal in how I process",
-    "I use an even mix of nonverbal and verbal processing",
-    "I am usually a verbal processor",
-    "I lean verbal in how I process",
-    "I am a very verbal processor"
-  ],
-  Agenda: [
-    "I am very strict about sticking to the agenda",
-    "I usually stick to the agenda",
-    "I lean toward sticking to the agenda",
-    "I balance sticking to and flexing the agenda",
-    "I am usually flexible with the agenda",
-    "I lean flexible with the agenda",
-    "I am very flexible with the agenda"
-  ],
-  Emotion: [
-    "I strongly hide or downplay emotion",
-    "I usually keep emotion reserved",
-    "I lean reserved with emotion",
-    "I balance being reserved and speaking with emotion",
-    "I usually speak with emotion",
-    "I lean expressive with emotion",
-    "I am very expressive / emotion‑forward"
-  ],
-  Communication: [
-    "I am very linear in how I communicate",
-    "I usually communicate in a linear way",
-    "I lean linear in communication",
-    "I balance linear and story‑based communication",
-    "I usually communicate through stories",
-    "I lean story‑based in communication",
-    "I am very story‑based in how I communicate"
-  ],
-  Movement: [
-    "I stay very still while facilitating",
-    "I usually stay still",
-    "I lean toward staying still",
-    "I balance being still and using gestures",
-    "I usually use gestures and movement",
-    "I lean into using gestures",
-    "I am very expressive with movement"
-  ],
-  Space: [
-    "I strongly prefer more physical space",
-    "I usually prefer more space",
-    "I lean toward preferring more space",
-    "I balance giving space and being close",
-    "I am usually comfortable being close",
-    "I lean comfortable with being close / light touch (as appropriate)",
-    "I am very comfortable being close / using appropriate touch"
-  ],
-  Teaching: [
-    "I am very facts & figures oriented",
-    "I usually rely on facts & figures",
-    "I lean toward facts & figures",
-    "I balance facts & figures and stories",
-    "I usually teach with stories",
-    "I lean toward story‑based teaching",
-    "I am very story‑based in teaching"
-  ],
-  Facilitation: [
-    "I stand in one spot almost all the time",
-    "I usually stand in one spot",
-    "I lean toward standing in one spot",
-    "I balance standing in place and moving around",
-    "I usually move around the room",
-    "I lean toward moving around",
-    "I am very active and move around a lot"
-  ]
-};
+        const state = { name: "", scores: {} };
+        dims.forEach(d => state.scores[d.key] = 4);
 
-const state={name:"",scores:{}}; dims.forEach(d=>state.scores[d.key]=4);
-const sliders=document.getElementById("sliders");
-const nameInput=document.getElementById("name");
-const nameLine=document.getElementById("nameLine");
+        const sliders   = document.getElementById("sliders");
+        const nameInput = document.getElementById("name");
+        const nameLine  = document.getElementById("nameLine");
+        const summaryText = document.getElementById("summaryText");
+        const toast = document.getElementById("toast");
 
-// Build sliders
-dims.forEach(d=>{
-  const div=document.createElement("div"); div.className="item";
-  div.innerHTML=`<div class="row"><h4>${d.label}</h4><div class="val"><span class="v">4</span>/7</div></div>
-    <input type="range" min="1" max="7" step="1" value="4" class="range" aria-label="${d.label} slider (1 to 7)"/>
-    <div class="anchors"><span>${d.left}</span><span>${d.right}</span></div>`;
-  const range=div.querySelector(".range"); const v=div.querySelector(".v");
-  range.addEventListener("input",()=>{ state.scores[d.key]=parseInt(range.value,10); v.textContent=range.value; render(); });
-  sliders.appendChild(div);
-});
+        // Build the nine sliders with accessible IDs/labels
+        dims.forEach(d => {
+            const div = document.createElement("div");
+            div.className = "item";
+            div.innerHTML = `
+                <div class="row">
+                    <h4 id="label-${d.key}">${d.label}</h4>
+                    <div class="val"><span id="val-${d.key}" class="v">4</span>/7</div>
+                </div>
+                <input id="range-${d.key}" name="${d.key}" type="range" min="1" max="7" step="1" value="4" class="range" aria-labelledby="label-${d.key}" aria-describedby="desc-${d.key}" />
+                <div class="anchors"><span>${d.left}</span><span>${d.right}</span></div>
+                <div id="desc-${d.key}" class="sr-only">${phrases[d.key][3]}</div>
+            `;
+            const range = div.querySelector(".range");
+            const v     = div.querySelector(".v");
+            range.addEventListener("input", () => {
+                state.scores[d.key] = parseInt(range.value, 10);
+                v.textContent = range.value;
+                render();
+            });
+            sliders.appendChild(div);
+        });
 
-nameInput.addEventListener("input",()=>{ state.name=nameInput.value; render(); });
+        nameInput.addEventListener("input", () => { state.name = nameInput.value; render(); });
 
-function render(){
-  // Name line
-  if(state.name && state.name.trim().length>0){
-    nameLine.style.display="block";
-    nameLine.textContent="Facilitation Style Profile — " + state.name.trim();
-  } else {
-    nameLine.style.display="none";
-    nameLine.textContent="";
-  }
-  // Bullet list
-  const list=document.getElementById("summaryList");
-  list.innerHTML="";
-  dims.forEach(d=>{
-    const li=document.createElement("li");
-    const v=state.scores[d.key];
-    li.textContent = `${d.label}: ${phrases[d.key][v-1]} (${v}/7)`;
-    list.appendChild(li);
-  });
-}
+        function showToast(msg){
+            toast.textContent = msg;
+            toast.style.display = 'block';
+            clearTimeout(toast._t);
+            toast._t = setTimeout(()=>{ toast.style.display = 'none'; }, 2200);
+        }
 
-document.getElementById("copy").addEventListener("click",async()=>{
-  const header = state.name && state.name.trim().length>0 ? `Facilitation Style Profile — ${state.name.trim()}\n` : "Facilitation Style Profile\n";
-  const lines = dims.map(d=> `${d.label}: ${phrases[d.key][state.scores[d.key]-1]} (${state.scores[d.key]}/7)`);
-  try{ await navigator.clipboard.writeText(header + lines.join("\\n")); alert("Summary copied."); }catch(e){}
-});
+        function render(){
+            // Name line above the bullets
+            if (state.name && state.name.trim().length > 0) {
+                nameLine.style.display = "block";
+                nameLine.textContent = "Facilitation Style Profile — " + state.name.trim();
+            } else {
+                nameLine.style.display = "none";
+                nameLine.textContent = "";
+            }
+            // Update per-slider visible values and hidden descriptions
+            dims.forEach(d => {
+                const v = state.scores[d.key];
+                const valEl = document.getElementById(`val-${d.key}`);
+                const descEl = document.getElementById(`desc-${d.key}`);
+                if (valEl) valEl.textContent = v;
+                if (descEl) descEl.textContent = phrases[d.key][v-1];
+            });
+            // Build the bulleted summary
+            const list = document.getElementById("summaryList");
+            list.innerHTML = "";
+            const lines = dims.map(d => {
+                const v = state.scores[d.key];
+                return `${d.label}: ${phrases[d.key][v-1]} (${v}/7)`;
+            });
+            lines.forEach(l => {
+                const li = document.createElement('li'); li.textContent = l; list.appendChild(li);
+            });
+            const header = state.name && state.name.trim().length > 0
+                ? `Facilitation Style Profile — ${state.name.trim()}\n\n`
+                : "Facilitation Style Profile\n\n";
+            summaryText.value = header + lines.join('\n');
 
-render();
-</script>
+            // Post message to parent if embedded in iframe
+            try{
+                if (window.parent && window.parent !== window){
+                    window.parent.postMessage({ type: 'facilitation-profile', name: state.name, scores: state.scores, timestamp: new Date().toISOString() }, '*');
+                }
+            }catch(e){/* ignore */}
+        }
+
+        async function tryCopy(text){
+            try{
+                await navigator.clipboard.writeText(text);
+                return true;
+            }catch(e){
+                return false;
+            }
+        }
+
+        document.getElementById("copy").addEventListener("click", async () => {
+            const header = state.name && state.name.trim().length > 0
+                ? `Facilitation Style Profile — ${state.name.trim()}\n\n`
+                : "Facilitation Style Profile\n\n";
+            const lines = dims.map(d => `${d.label}: ${phrases[d.key][state.scores[d.key]-1]} (${state.scores[d.key]}/7)`);
+            const text = header + lines.join("\n");
+            const ok = await tryCopy(text);
+            if (ok){
+                showToast('Summary copied to clipboard');
+            } else {
+                // fallback: populate textarea and select
+                summaryText.value = text;
+                summaryText.focus(); summaryText.select();
+                showToast('Clipboard blocked — summary placed in the box for manual copy');
+            }
+        });
+
+        document.getElementById('copyJson').addEventListener('click', async ()=>{
+            const payload = { name: state.name, scores: state.scores, timestamp: new Date().toISOString() };
+            const txt = JSON.stringify(payload, null, 2);
+            const ok = await tryCopy(txt);
+            if (ok) showToast('JSON copied to clipboard');
+            else { summaryText.value = txt; summaryText.focus(); summaryText.select(); showToast('Clipboard blocked — JSON placed in box'); }
+        });
+
+        document.getElementById('downloadCsv').addEventListener('click', ()=>{
+            const rows = [ ['Dimension','Value','Phrase'] ];
+            dims.forEach(d => {
+                const v = state.scores[d.key];
+                rows.push([d.label, String(v), phrases[d.key][v-1]]);
+            });
+            const csv = rows.map(r => r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+            const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = 'facilitation-profile.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+        });
+
+        document.getElementById('reset').addEventListener('click', ()=>{
+            state.name = '';
+            nameInput.value = '';
+            dims.forEach(d => { state.scores[d.key] = 4; const r = document.getElementById(`range-${d.key}`); if (r) r.value = 4; });
+            render();
+            showToast('Reset to defaults');
+        });
+
+        // initial render
+        render();
+    </script>
 </body>
-</html>
+</html></div>
