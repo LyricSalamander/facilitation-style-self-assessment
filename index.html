@@ -33,7 +33,7 @@
     <div class="wrap">
         <div class="card">
             <h1>Facilitation Style Self-Assessment</h1>
-            <p class="sub">Move each slider (1–7). There are no right or wrong answers—this reflects your style today.</p>
+            <p class="sub">This exercise will help you explore how you naturally show up when facilitating. There are no right or wrong answers — the goal is to build self‑awareness so you can identify when you may need to flex your style based on the group or situation. Instructions: for each pair of statements below, move the slider somewhere along the line to show where you naturally fall most of the time.</p>
             <label>Your name (optional)
                 <input type="text" id="name" placeholder="e.g., Alex Rivera" />
             </label>
@@ -55,7 +55,7 @@
                     <ul class="summary" id="summaryList"></ul>
                     <label for="summaryText" class="tip">Selectable summary (fallback for clipboard issues)</label>
                     <textarea id="summaryText" readonly style="width:100%;min-height:140px;padding:8px;border-radius:8px;border:1px solid #ddd;background:#fafafa;margin-top:8px"></textarea>
-                    <div class="tip">Tip: Screenshot or copy the summary into your A3.</div>
+                    <div class="tip">Tip: Screenshot or copy the summary into website, performance review, or other related areas.</div>
                     <div id="toast" role="status" aria-live="polite" style="position:fixed;right:18px;bottom:18px;background:#111;color:#fff;padding:8px 12px;border-radius:8px;display:none;opacity:0.95;font-size:13px"></div>
         </div>
     </div>
@@ -73,93 +73,75 @@
             {key:"Facilitation", label:"Facilitation Movement",    left:"stand",         right:"move"}
         ];
 
-        // Nuanced 1–7 phrasing (“I …”) per dimension
+        // Nuanced 1–5 phrasing (“I …”) per dimension
         const phrases = {
-            Conflict: [
-                "I am very conflict-avoidant",
-                "I usually avoid conflict",
-                "I lean toward avoiding conflict",
-                "I have an even mix of avoiding and embracing conflict",
-                "I usually embrace conflict",
-                "I lean into embracing conflict",
-                "I am very comfortable embracing conflict"
-            ],
-            Processing: [
-                "I am a very nonverbal processor",
-                "I am usually a nonverbal processor",
-                "I lean nonverbal in how I process",
-                "I use an even mix of nonverbal and verbal processing",
-                "I am usually a verbal processor",
-                "I lean verbal in how I process",
-                "I am a very verbal processor"
-            ],
-            Agenda: [
-                "I am very strict about sticking to the agenda",
-                "I usually stick to the agenda",
-                "I lean toward sticking to the agenda",
-                "I balance sticking to and flexing the agenda",
-                "I am usually flexible with the agenda",
-                "I lean flexible with the agenda",
-                "I am very flexible with the agenda"
-            ],
-            Emotion: [
-                "I strongly hide or downplay emotion",
-                "I usually keep emotion reserved",
-                "I lean reserved with emotion",
-                "I balance being reserved and speaking with emotion",
-                "I usually speak with emotion",
-                "I lean expressive with emotion",
-                "I am very expressive / emotion-forward"
-            ],
-            Communication: [
-                "I am very linear in how I communicate",
-                "I usually communicate in a linear way",
-                "I lean linear in communication",
-                "I balance linear and story-based communication",
-                "I usually communicate through stories",
-                "I lean story-based in communication",
-                "I am very story-based in how I communicate"
-            ],
-            Movement: [
-                "I stay very still while facilitating",
-                "I usually stay still",
-                "I lean toward staying still",
-                "I balance being still and using gestures",
-                "I usually use gestures and movement",
-                "I lean into using gestures",
-                "I am very expressive with movement"
-            ],
-            Space: [
-                "I strongly prefer more physical space",
-                "I usually prefer more space",
-                "I lean toward preferring more space",
-                "I balance giving space and being close",
-                "I am usually comfortable being close",
-                "I lean comfortable with being close / light touch (as appropriate)",
-                "I am very comfortable being close / using appropriate touch"
-            ],
-            Teaching: [
-                "I am very facts & figures oriented",
-                "I usually rely on facts & figures",
-                "I lean toward facts & figures",
-                "I balance facts & figures and stories",
-                "I usually teach with stories",
-                "I lean toward story-based teaching",
-                "I am very story-based in teaching"
-            ],
-            Facilitation: [
-                "I stand in one spot almost all the time",
-                "I usually stand in one spot",
-                "I lean toward standing in one spot",
-                "I balance standing in place and moving around",
-                "I usually move around the room",
-                "I lean toward moving around",
-                "I am very active and move around a lot"
-            ]
-        };
+           Conflict: [
+    "I am very conflict avoidant",                // 1
+    "I usually avoid conflict",                   // 2
+    "I have an even mix of avoiding and embracing conflict", // 3 (balance)
+    "I usually embrace conflict",                 // 4
+    "I am very comfortable embracing conflict"    // 5
+  ],
+  Processing: [
+    "I am a very nonverbal processor",            // 1
+    "I am usually a nonverbal processor",         // 2
+    "I use an even mix of nonverbal and verbal processing", // 3
+    "I am usually a verbal processor",            // 4
+    "I am a very verbal processor"                // 5
+  ],
+  Agenda: [
+    "I am very strict about sticking to the agenda", // 1
+    "I usually stick to the agenda",               // 2
+    "I sometimes stick to the agenda and am sometimes flexible with it", // 3
+    "I am usually flexible with the agenda",       // 4
+    "I am very flexible with the agenda"           // 5
+  ],
+  Emotion: [
+    "I strongly hide or downplay emotion",         // 1
+    "I usually keep my emotions reserved",         // 2
+    "I balance being reserved and speaking with emotion", // 3
+    "I usually speak with emotion",                // 4
+    "I am very expressive / emotion-forward"       // 5
+  ],
+  Communication: [
+    "I very much like to make points in a linear fashion", // 1
+    "I usually communicate in a linear way",       // 2
+    "I balance linear and story-based communication", // 3
+    "I usually communicate through stories",       // 4
+    "I am very story-based in how I communicate"   // 5
+  ],
+  Movement: [
+    "I stay very still while facilitating",        // 1
+    "I usually stay still",                        // 2
+    "I balance being still and using gestures",    // 3
+    "I usually use gestures",                      // 4
+    "I gesture frequently when I facilitate"       // 5
+  ],
+  Space: [
+    "I strongly prefer more physical space",       // 1
+    "I usually prefer more space",                 // 2
+    "I balance giving space and being close",      // 3
+    "I am usually comfortable being close",        // 4
+    "I am very comfortable being close / using appropriate touch" // 5
+  ],
+  Teaching: [
+    "I like to use facts and figures to teach",    // 1
+    "I usually rely on facts & figures to teach",  // 2
+    "I balance facts & figures and stories",       // 3
+    "I usually teach with stories/examples",       // 4
+    "I am very story-based in teaching"            // 5
+  ],
+  Facilitation: [
+    "I stand in one spot almost all the time",     // 1
+    "I usually stand in one spot",                 // 2
+    "I balance standing in one spot and moving around",// 3
+    "I usually move around the room",              // 4
+    "I am very active and move around a lot"       // 5
+  ]
+};
 
         const state = { name: "", scores: {} };
-        dims.forEach(d => state.scores[d.key] = 4);
+        dims.forEach(d => state.scores[d.key] = 3);
 
         const sliders   = document.getElementById("sliders");
         const nameInput = document.getElementById("name");
@@ -174,11 +156,11 @@
             div.innerHTML = `
                 <div class="row">
                     <h4 id="label-${d.key}">${d.label}</h4>
-                    <div class="val"><span id="val-${d.key}" class="v">4</span>/7</div>
+                    <div class="val"><span id="val-${d.key}" class="v">3</span>/5</div>
                 </div>
-                <input id="range-${d.key}" name="${d.key}" type="range" min="1" max="7" step="1" value="4" class="range" aria-labelledby="label-${d.key}" aria-describedby="desc-${d.key}" />
+                <input id="range-${d.key}" name="${d.key}" type="range" min="1" max="5" step="1" value="3" class="range" aria-labelledby="label-${d.key}" aria-describedby="desc-${d.key}" />
                 <div class="anchors"><span>${d.left}</span><span>${d.right}</span></div>
-                <div id="desc-${d.key}" class="sr-only">${phrases[d.key][3]}</div>
+                <div id="desc-${d.key}" class="sr-only">${phrases[d.key][2]}</div>
             `;
             const range = div.querySelector(".range");
             const v     = div.querySelector(".v");
@@ -221,7 +203,7 @@
             list.innerHTML = "";
             const lines = dims.map(d => {
                 const v = state.scores[d.key];
-                return `${d.label}: ${phrases[d.key][v-1]} (${v}/7)`;
+                return `${d.label}: ${phrases[d.key][v-1]} (${v}/5)`;
             });
             lines.forEach(l => {
                 const li = document.createElement('li'); li.textContent = l; list.appendChild(li);
@@ -252,7 +234,7 @@
             const header = state.name && state.name.trim().length > 0
                 ? `Facilitation Style Profile — ${state.name.trim()}\n\n`
                 : "Facilitation Style Profile\n\n";
-            const lines = dims.map(d => `${d.label}: ${phrases[d.key][state.scores[d.key]-1]} (${state.scores[d.key]}/7)`);
+            const lines = dims.map(d => `${d.label}: ${phrases[d.key][state.scores[d.key]-1]} (${state.scores[d.key]}/5)`);
             const text = header + lines.join("\n");
             const ok = await tryCopy(text);
             if (ok){
@@ -288,7 +270,7 @@
         document.getElementById('reset').addEventListener('click', ()=>{
             state.name = '';
             nameInput.value = '';
-            dims.forEach(d => { state.scores[d.key] = 4; const r = document.getElementById(`range-${d.key}`); if (r) r.value = 4; });
+            dims.forEach(d => { state.scores[d.key] = 3; const r = document.getElementById(`range-${d.key}`); if (r) r.value = 3; });
             render();
             showToast('Reset to defaults');
         });
@@ -297,4 +279,4 @@
         render();
     </script>
 </body>
-</html></div>
+</html>
