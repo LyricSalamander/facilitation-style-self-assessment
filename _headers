@@ -1,2 +1,2 @@
 /*
-  Content-Security-Policy: frame-ancestors https://*.instructure.com
+  Content-Security-Policy: frame-ancestors https://canvas.uw.edu https://*.instructure.com
